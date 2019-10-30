@@ -35,6 +35,7 @@ class Blockchain(object):
         self.chain.append(block)
         # Return the new block
         return block
+        
     def hash(self, block):
         """
         Creates a SHA-256 hash of a Block
@@ -62,8 +63,10 @@ class Blockchain(object):
         # TODO: Return the hashed block string in hexadecimal format
         return hex_hash
     @property
+
     def last_block(self):
         return self.chain[-1]
+
     def proof_of_work(self, block):
         """
         Simple Proof of Work Algorithm
@@ -79,7 +82,7 @@ class Blockchain(object):
             proof += 1
         guess = f'{block_string}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
-        return proof
+        return proof, guess_hash
     @staticmethod
     def valid_proof(block_string, proof):
         """
@@ -105,10 +108,10 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['GET'])
 def mine():
     # Run the proof of work algorithm to get the next proof
-    proof = blockchain.proof_of_work(blockchain.last_block)
+    proof, guess_hash = blockchain.proof_of_work(blockchain.last_block)
     # Forge the new Block by adding it to the chain with the proof
-    previous_hash = blockchain.hash(blockchain.last_block)
-    block = blockchain.new_block(proof, previous_hash)
+    # previous_hash = blockchain.hash(blockchain.last_block)
+    block = blockchain.new_block(proof, previous_hash=guess_hash)
     response = {
         'message': "New Block Forged",
         'index': block['index'],

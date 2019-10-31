@@ -1,3 +1,18 @@
 .App {
   text-align: center;
 }
+
+.transaction-form{
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.input{
+  text-align: center;
+}
+
+.form{
+  justify-content: center;
+  display: flex;
+}
